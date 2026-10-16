@@ -1,0 +1,83 @@
+*{box-sizing:border-box}
+:root{--ink:#183b38;--muted:#71817e;--teal:#176b63;--teal-dark:#124c47;--line:#dfe8e5;--paper:#fff;--wash:#f5f8f6;--mint:#dceee7}
+html{min-height:100%;background:#edf2ef}
+body{margin:0;min-height:100vh;font-family:"DM Sans",sans-serif;color:var(--ink);display:grid;place-items:center;padding:28px;background:radial-gradient(ellipse at 8% 10%,#e0eee8 0,transparent 38%),#edf2ef}
+button,input{font:inherit}
+button{cursor:pointer}
+.auth-shell{width:min(1180px,100%);min-height:720px;display:grid;grid-template-columns:0.92fr 1.08fr;background:var(--paper);border-radius:24px;overflow:hidden;box-shadow:0 24px 80px #163e3516;border:1px solid #ffffff}
+.brand-panel{position:relative;padding:42px 46px;background:#143f3b;color:#f8fcfa;display:flex;flex-direction:column;overflow:hidden}
+.brand-panel:before,.brand-panel:after{content:"";position:absolute;border:1px solid #ffffff12;border-radius:50%;pointer-events:none}
+.brand-panel:before{width:520px;height:520px;right:-250px;top:80px}
+.brand-panel:after{width:390px;height:390px;right:-185px;top:145px}
+.brand{display:inline-flex;align-items:center;gap:11px;color:inherit;text-decoration:none;font:800 20px Manrope,sans-serif;letter-spacing:-.6px;position:relative;z-index:1}
+.brand>span:last-child>span{color:#9dd6c1}
+.brand-mark{width:39px;height:39px;display:grid;place-items:center;border-radius:12px;background:#ffffff14;border:1px solid #ffffff28}
+.brand-mark svg{width:28px;stroke:#b9e5d3;stroke-width:2.3;fill:none;stroke-linecap:round}
+.brand-copy{position:relative;z-index:1;margin:auto 0;padding:76px 0 68px;max-width:420px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:1.65px;color:#7ebba5;display:inline-flex;align-items:center;gap:9px}
+.eyebrow-dot{width:7px;height:7px;border-radius:50%;background:#83c9a9;box-shadow:0 0 0 4px #83c9a91c}
+h1,h2,p{margin-top:0}
+h1{font:700 clamp(36px,4vw,52px)/1.12 Manrope,sans-serif;letter-spacing:-2px;margin:23px 0 19px}
+h1 em{font-style:normal;color:#9bd4bd}
+.brand-copy p{font-size:15px;line-height:1.85;color:#c1d6ce;max-width:365px;margin:0}
+.care-card{position:relative;z-index:1;display:flex;align-items:center;gap:14px;padding:17px 18px;border:1px solid #ffffff20;background:#ffffff0b;border-radius:15px;max-width:390px}
+.care-icon{width:42px;height:42px;border-radius:12px;background:#b1dfc91b;display:grid;place-items:center;flex-shrink:0}
+.care-icon svg{width:25px;stroke:#a5ddc4;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.care-card strong,.care-card span{display:block}
+.care-card strong{font-size:13px;font-weight:700;margin-bottom:5px}
+.care-card div:nth-child(2) span{font-size:11px;color:#b1cbc0}
+.care-check{margin-left:auto;color:#9dd6bd;font-size:20px}
+.brand-bottom{position:relative;z-index:1;display:flex;justify-content:space-between;gap:12px;margin-top:38px;color:#9ab7ad;font-size:10px;letter-spacing:.35px}
+.form-panel{padding:40px 7.5% 24px;display:flex;flex-direction:column;min-width:0}
+.mobile-brand{display:none;color:var(--ink)}
+.form-wrap{width:min(410px,100%);margin:auto}
+.form-heading{margin-bottom:25px}
+.form-heading .eyebrow{color:#6b9386;font-size:10px}
+h2{font:800 31px/1.2 Manrope,sans-serif;letter-spacing:-1.15px;margin:12px 0 9px;color:#193d39}
+.form-heading p{font-size:14px;line-height:1.65;color:var(--muted);margin-bottom:0}
+.mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:5px;background:#f0f5f2;padding:5px;border-radius:11px;margin-bottom:23px}
+.mode-btn{border:0;background:transparent;border-radius:8px;padding:11px 8px;color:#6b7f79;font-size:13px;font-weight:700;transition:background .2s,color .2s,box-shadow .2s}
+.mode-btn.active{background:#fff;color:#195a51;box-shadow:0 2px 8px #153b3510}
+.field-label{display:block;font-size:12px;font-weight:700;color:#314f49;margin-bottom:8px}
+.field-label.spaced{margin-top:15px}
+.field-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:19px}
+.field-row .field-label{margin:0}
+.input-wrap{height:47px;border:1px solid #dbe5e1;border-radius:9px;display:flex;align-items:center;gap:10px;padding:0 12px;background:#fff;transition:border .18s,box-shadow .18s}
+.input-wrap:focus-within{border-color:#4b9b88;box-shadow:0 0 0 3px #5aa58b1b}
+.input-icon{font-size:16px;color:#8ba19a;width:17px;text-align:center;flex-shrink:0}
+.input-wrap input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#213e39;font-size:13px}
+.input-wrap input::placeholder{color:#a2b0ab}
+.password-toggle{border:0;background:transparent;color:#438276;font-size:11px;font-weight:700;padding:5px}
+.text-button{border:0;padding:0;background:transparent;color:#28776b;font-size:12px;font-weight:700}
+.text-button:hover{text-decoration:underline}
+.check-row{display:flex;align-items:flex-start;gap:9px;color:#6f817b;font-size:11px;line-height:1.5;margin:17px 0 20px;cursor:pointer}
+.check-row input{accent-color:#267a6c;width:14px;height:14px;margin:1px 0 0;flex-shrink:0}
+.primary-btn{width:100%;min-height:48px;border:0;border-radius:9px;padding:0 17px;display:flex;align-items:center;justify-content:center;gap:12px;background:#176b60;color:#fff;font-size:13px;font-weight:700;box-shadow:0 5px 12px #176b6022;transition:background .2s,transform .2s}
+.primary-btn span{font-size:18px;font-weight:400}
+.primary-btn:hover{background:#12564e;transform:translateY(-1px)}
+.form-foot{text-align:center;font-size:12px;color:#788780;margin:20px 0 0}
+.form-foot .text-button{margin-left:3px}
+.demo-note{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:25px;color:#899790;font-size:10px}
+.lock-icon{font-size:16px;color:#69998a}
+.form-footer{display:flex;justify-content:space-between;gap:12px;padding-top:24px;color:#a0aaa5;font-size:10px}
+.notice{font-size:12px;line-height:1.5;padding:11px 12px;border-radius:8px;margin:-7px 0 18px}
+.notice.error{background:#fff0ee;color:#a34338;border:1px solid #f6d4cf}
+.notice.success{background:#eaf7ef;color:#236b48;border:1px solid #d0eadb}
+.role-picker{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.role-option{position:relative;display:flex;align-items:center;gap:9px;border:1px solid #dce6e1;border-radius:10px;padding:11px 9px;cursor:pointer;min-width:0}
+.role-option.selected{border-color:#4c9b87;background:#f3faf6;box-shadow:inset 0 0 0 1px #4c9b8718}
+.role-option input{position:absolute;opacity:0;pointer-events:none}
+.role-symbol{width:31px;height:31px;border-radius:8px;background:#edf4f0;display:grid;place-items:center;color:#377e6c;font-size:19px;flex-shrink:0}
+.role-option strong,.role-option small{display:block}
+.role-option strong{font-size:11px;color:#294b43;margin-bottom:3px}
+.role-option small{font-size:9px;color:#80918a;line-height:1.35}
+.role-radio{margin-left:auto;width:14px;height:14px;border:1px solid #b6c6bf;border-radius:50%;flex-shrink:0}
+.role-option.selected .role-radio{border:4px solid #31836f}
+.terms-row{margin:15px 0 17px}
+.security-note{font-size:10px;line-height:1.5;text-align:center;color:#84948d;margin:12px 0 0}
+[hidden]{display:none!important}
+#registerForm .form-foot{margin-top:15px}
+#registerForm .demo-note{margin-top:15px}
+@media(max-width:850px){body{padding:18px}.auth-shell{grid-template-columns:.82fr 1.18fr;min-height:680px}.brand-panel{padding:34px 30px}.form-panel{padding:34px 6% 22px}.brand-copy{padding:55px 0}.brand-bottom{font-size:9px}}
+@media(max-width:650px){body{display:block;padding:0;background:#fff}.auth-shell{display:flex;flex-direction:column;min-height:100vh;border:0;border-radius:0;box-shadow:none}.brand-panel{display:none}.form-panel{padding:22px 24px 18px;min-height:100vh}.mobile-brand{display:inline-flex;margin-bottom:40px;font-size:19px}.mobile-brand .brand-mark{background:#eaf4ef;border-color:#dcece4}.mobile-brand .brand-mark svg{stroke:#237568}.mobile-brand>span:last-child>span{color:#4d9481}.form-wrap{width:100%;margin:0 auto;flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:24px}.form-heading{margin-bottom:23px}h2{font-size:29px}.form-footer{padding-top:20px}.demo-note{margin-top:24px}}
+@media(max-width:390px){.form-panel{padding-left:18px;padding-right:18px}.role-option{gap:6px;padding:9px 7px}.role-symbol{width:27px;height:27px}.role-option small{font-size:8px}}

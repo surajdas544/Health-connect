@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HealthConnect — Database Manager</title>
+<style>
+*{box-sizing:border-box}
+:root{--ink:#183b38;--muted:#6c7f7a;--teal:#176b63;--line:#dfe8e5;--wash:#f5f8f6;--red:#a34338}
+body{margin:0;font:14px/1.5 "DM Sans",system-ui,sans-serif;color:var(--ink);background:#edf2ef;min-height:100vh}
+button,input,select,textarea{font:inherit}
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+aside{background:#143f3b;color:#f8fcfa;padding:22px 16px;display:flex;flex-direction:column;gap:6px}
+aside h1{font-size:16px;margin:0 0 2px}aside small{color:#9ab7ad;display:block;margin-bottom:14px}
+.tbl{display:flex;justify-content:space-between;width:100%;border:0;background:transparent;color:#cfe3db;padding:9px 11px;border-radius:8px;text-align:left;cursor:pointer}
+.tbl:hover{background:#ffffff12}.tbl.active{background:#ffffff1f;color:#fff;font-weight:700}
+.tbl span{opacity:.7}
+.side-actions{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+main{padding:24px 28px;min-width:0}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.bar h2{margin:0 auto 0 0;font-size:22px}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+.btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+.btn.danger{color:var(--red)}
+.btn.small{padding:4px 10px;font-size:12px}
+aside .btn{background:#ffffff14;border-color:#ffffff22;color:#fff}
+input[type=search],input[type=text],textarea,select{border:1px solid var(--line);border-radius:8px;padding:8px 11px;background:#fff;width:100%}
+.bar input[type=search]{width:240px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.wrap{overflow:auto;max-height:68vh}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+th{position:sticky;top:0;background:var(--wash);font-size:11px;letter-spacing:.6px;color:var(--muted);text-transform:uppercase}
+td.null{color:#aab8b3;font-style:italic}
+.pager{display:flex;gap:10px;align-items:center;padding:10px 14px;color:var(--muted)}
+.pager .grow{margin-right:auto}
+dialog{border:0;border-radius:14px;padding:22px;width:min(520px,94vw);box-shadow:0 20px 60px #0004}
+dialog::backdrop{background:#0b2523aa}
+.field{margin-bottom:12px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:4px}
+.field small{color:var(--muted)}
+.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.toast{position:fixed;right:20px;bottom:20px;background:#143f3b;color:#fff;padding:11px 16px;border-radius:10px;opacity:0;transition:.25s;pointer-events:none}
+.toast.show{opacity:1}.toast.err{background:var(--red)}
+#sqlBox{margin-bottom:16px;display:none}
+#sqlBox textarea{font-family:ui-monospace,Menlo,monospace;height:80px}
+.empty{padding:34px;text-align:center;color:var(--muted)}
+@media(max-width:760px){.app{grid-template-columns:1fr}aside{flex-direction:row;flex-wrap:wrap}.side-actions{margin:0;flex-direction:row}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <h1>HealthConnect DB</h1><small id="dbFile">—</small>
+    <div id="tableList"></div>
+    <div class="side-actions">
+      <button class="btn" id="sqlToggle">SQL query</button>
+      <button class="btn" id="exportDb">Download backup (.db)</button>
+      <button class="btn" id="changeToken">Change admin token</button>
+    </div>
+  </aside>
+  <main>
+    <div class="bar">
+      <h2 id="title">Select a table</h2>
+      <input type="search" id="search" placeholder="Search rows…" />
+      <button class="btn" id="csvBtn">Export CSV</button>
+      <button class="btn primary" id="addBtn">+ Add row</button>
+    </div>
+    <div id="sqlBox" class="card" style="padding:14px">
+      <textarea id="sqlText" placeholder="SELECT * FROM users;"></textarea>
+      <div class="actions"><button class="btn primary" id="sqlRun">Run (read-only)</button></div>
+    </div>
+    <div class="card"><div class="wrap" id="grid"></div>
+      <div class="pager"><span class="grow" id="pageInfo"></span><button class="btn small" id="prev">Previous</button><button class="btn small" id="next">Next</button></div>
+    </div>
+  </main>
+</div>
+<dialog id="dlg"><form method="dialog" id="dlgForm"><h3 id="dlgTitle" style="margin-top:0"></h3><div id="dlgFields"></div>
+  <div class="actions"><button type="button" class="btn" id="dlgCancel">Cancel</button><button type="submit" class="btn primary">Save</button></div></form></dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = v => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let token = sessionStorage.getItem('hcAdminToken') || '';
+let current = null, columns = [], rows = [], offset = 0, total = 0, editing = null;
+const LIMIT = 25;
+
+function toast(msg, err) { const t = $('#toast'); t.textContent = msg; t.className = 'toast show' + (err ? ' err' : ''); clearTimeout(toast.h); toast.h = setTimeout(() => t.className = 'toast', 3200); }
+
+async function api(path, opts = {}) {
+  const res = await fetch('/api/admin/' + path, { ...opts, headers: { 'X-Admin-Token': token, 'Content-Type': 'application/json' } });
+  if (res.status === 401) { askToken(); throw new Error('Admin token required'); }
+  if (!res.ok) { let m = res.statusText; try { m = (await res.json()).error; } catch {} throw new Error(m); }
+  return res;
+}
+function askToken() {
+  const t = prompt('Enter the admin token (printed when server.py starts, also saved in .admin-token):');
+  if (t) { token = t.trim(); sessionStorage.setItem('hcAdminToken', token); loadTables(); }
+}
+async function download(path, filename) {
+  try { const blob = await (await api(path)).blob(); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click(); URL.revokeObjectURL(a.href); }
+  catch (e) { toast(e.message, true); }
+}
+
+async function loadTables() {
+  try {
+    const data = await (await api('tables')).json();
+    $('#dbFile').textContent = data.db_file;
+    $('#tableList').innerHTML = data.tables.map(t => `<button class="tbl ${t.name === current ? 'active' : ''}" data-t="${esc(t.name)}">${esc(t.name)}<span>${t.count}</span></button>`).join('');
+    if (!current && data.tables.length) selectTable(data.tables[0].name);
+  } catch (e) { toast(e.message, true); }
+}
+async function selectTable(name) { current = name; offset = 0; $('#search').value = ''; $('#title').textContent = name; await loadRows(); loadTables(); }
+
+async function loadRows() {
+  if (!current) return;
+  try {
+    const qs = new URLSearchParams({ table: current, limit: LIMIT, offset, q: $('#search').value.trim() });
+    const data = await (await api('rows?' + qs)).json();
+    columns = data.columns; rows = data.rows; total = data.total;
+    renderGrid();
+  } catch (e) { toast(e.message, true); }
+}
+function renderGrid() {
+  if (!rows.length) { $('#grid').innerHTML = '<div class="empty">No rows.</div>'; }
+  else {
+    const head = columns.map(c => `<th>${esc(c.name)}</th>`).join('') + '<th></th>';
+    const body = rows.map((r, i) => '<tr>' + columns.map(c => r[c.name] === null ? '<td class="null">NULL</td>' : `<td title="${esc(r[c.name])}">${esc(r[c.name])}</td>`).join('') +
+      `<td><button class="btn small" data-edit="${i}">Edit</button> <button class="btn small danger" data-del="${i}">Delete</button></td></tr>`).join('');
+    $('#grid').innerHTML = `<table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
+  }
+  const end = Math.min(offset + LIMIT, total);
+  $('#pageInfo').textContent = total ? `${offset + 1}–${end} of ${total}` : '0 rows';
+  $('#prev').disabled = offset === 0; $('#next').disabled = end >= total;
+}
+
+function openForm(row) {
+  editing = row;
+  $('#dlgTitle').textContent = (row ? 'Edit row in ' : 'Add row to ') + current;
+  $('#dlgFields').innerHTML = columns.filter(c => c.name !== 'id').map(c => {
+    const v = row ? row[c.name] : '';
+    return `<div class="field"><label>${esc(c.name)} <small>${esc(c.type || '')}${c.notnull ? ' · required' : ''}</small></label><input type="text" name="${esc(c.name)}" value="${v === null || v === undefined ? '' : esc(v)}"></div>`;
+  }).join('');
+  $('#dlg').showModal();
+}
+$('#dlgForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const values = {}; new FormData(e.target).forEach((v, k) => values[k] = v);
+  try {
+    await api('rows', { method: editing ? 'PUT' : 'POST', body: JSON.stringify({ table: current, rowid: editing && editing._rowid_, values }) });
+    $('#dlg').close(); toast('Saved'); loadRows(); loadTables();
+  } catch (err) { toast(err.message, true); }
+});
+$('#dlgCancel').onclick = () => $('#dlg').close();
+
+$('#tableList').addEventListener('click', e => { const b = e.target.closest('[data-t]'); if (b) selectTable(b.dataset.t); });
+$('#grid').addEventListener('click', async e => {
+  const ed = e.target.closest('[data-edit]'), del = e.target.closest('[data-del]');
+  if (ed) openForm(rows[+ed.dataset.edit]);
+  if (del && confirm('Delete this row permanently?')) {
+    try { await api(`rows?table=${encodeURIComponent(current)}&rowid=${rows[+del.dataset.del]._rowid_}`, { method: 'DELETE' }); toast('Deleted'); loadRows(); loadTables(); }
+    catch (err) { toast(err.message, true); }
+  }
+});
+$('#addBtn').onclick = () => current && openForm(null);
+$('#prev').onclick = () => { offset = Math.max(0, offset - LIMIT); loadRows(); };
+$('#next').onclick = () => { offset += LIMIT; loadRows(); };
+let st; $('#search').addEventListener('input', () => { clearTimeout(st); st = setTimeout(() => { offset = 0; loadRows(); }, 250); });
+$('#csvBtn').onclick = () => current && download('csv?table=' + encodeURIComponent(current), current + '.csv');
+$('#exportDb').onclick = () => download('export', 'healthconnect-backup.db');
+$('#changeToken').onclick = askToken;
+$('#sqlToggle').onclick = () => { const b = $('#sqlBox'); b.style.display = b.style.display === 'block' ? 'none' : 'block'; };
+$('#sqlRun').onclick = async () => {
+  try {
+    const data = await (await api('sql', { method: 'POST', body: JSON.stringify({ sql: $('#sqlText').value }) })).json();
+    $('#title').textContent = 'Query result'; columns = []; offset = 0;
+    $('#grid').innerHTML = data.rows.length ? `<table><thead><tr>${data.columns.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${data.rows.map(r => '<tr>' + r.map(v => v === null ? '<td class="null">NULL</td>' : `<td>${esc(v)}</td>`).join('') + '</tr>').join('')}</tbody></table>` : '<div class="empty">No rows.</div>';
+    $('#pageInfo').textContent = `${data.rows.length} row(s)`; $('#prev').disabled = $('#next').disabled = true; current = null;
+  } catch (e) { toast(e.message, true); }
+};
+
+if (!token) askToken(); else loadTables();
+</script>
+</body>
+</html>

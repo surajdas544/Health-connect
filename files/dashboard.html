@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f3d3e" />
+  <title>HealthConnect | Patient Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dashboard-style.css" />
+</head>
+<body>
+  <svg aria-hidden="true" class="svg-sprite" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8z"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a8 8 0 0 1-1.8 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.8-1l-1.7.6-1.4-2.4L7.1 15a8 8 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.6a8 8 0 0 1 1.8-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.8 1l1.7-.6 1.4 2.4-1.4 1.1a8 8 0 0 1-.1 2z" transform="translate(-1 -1) scale(1.08)"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5"/><path d="M20 16v4H4v-4"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v12m-5-5 5 5 5-5"/><path d="M4 20h16"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+    <symbol id="i-location" viewBox="0 0 24 24"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+  </svg>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a href="#overview" class="brand" data-section="overview" aria-label="HealthConnect home">
+        <span class="brand-mark"><svg><use href="#i-heart"/></svg></span>
+        <span>health<span class="brand-light">connect</span><small>YOUR HEALTH, IN ONE PLACE</small></span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <a class="nav-link active" href="#overview" data-section="overview"><svg><use href="#i-grid"/></svg><span>Overview</span></a>
+        <a class="nav-link" href="#patient-details" data-section="patient-details"><svg><use href="#i-users"/></svg><span>Patient details</span></a>
+        <a class="nav-link" href="#appointments" data-section="appointments"><svg><use href="#i-calendar"/></svg><span>Appointments</span><span class="nav-count">2</span></a>
+        <a class="nav-link" href="#reports" data-section="reports"><svg><use href="#i-file"/></svg><span>Medical reports</span></a>
+        <a class="nav-link" href="#care-plan" data-section="care-plan"><svg><use href="#i-heart"/></svg><span>Precautions & medicines</span></a>
+        <a class="nav-link" href="#doctors" data-section="doctors"><svg><use href="#i-users"/></svg><span>Appointed doctors</span></a>
+        <a class="nav-link" href="#access" data-section="access"><svg><use href="#i-shield"/></svg><span>Access requests</span><span class="nav-count alert-count" id="navPendingCount">2</span></a>
+        <a class="nav-link" href="#access-history" data-section="access-history"><svg><use href="#i-clock"/></svg><span>Doctor access history</span></a>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="help-card">
+        <div class="help-icon"><svg><use href="#i-shield"/></svg></div>
+        <strong>Your records, your choice.</strong>
+        <p>You decide who can view your medical information.</p>
+        <a href="#access" data-section="access">Manage access <svg><use href="#i-arrow"/></svg></a>
+      </div>
+      <a href="#settings" class="nav-link settings-link" data-section="settings"><svg><use href="#i-settings"/></svg><span>Settings</span></a>
+      <div class="sidebar-user">
+        <div class="avatar avatar-patient">PS</div>
+        <div class="sidebar-user-info"><strong id="sidebarUserName">Demo User</strong><span id="sidebarUserRole">Patient demo</span></div>
+        <button class="icon-button tiny" id="profileMenuBtn" aria-label="Profile menu">•••</button>
+        <button class="icon-button tiny" id="demoLogoutBtn" aria-label="Sign out" title="Sign out">↪</button>
+      </div>
+    </aside>
+
+    <main class="main-content view-overview">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="mobileMenuBtn" aria-label="Open navigation"><svg><use href="#i-menu"/></svg></button>
+        <div class="breadcrumbs"><span>Workspace</span><span class="crumb-sep">/</span><strong id="crumbCurrent">Overview</strong></div>
+        <div class="topbar-actions">
+          <label class="search-box"><svg><use href="#i-search"/></svg><input id="globalSearch" type="search" placeholder="Search records..." aria-label="Search dashboard"/><kbd>⌘ K</kbd></label>
+          <button class="icon-button notification-button" id="notificationBtn" aria-label="Notifications"><svg><use href="#i-bell"/></svg><i></i></button>
+          <div class="topbar-divider"></div>
+          <button class="top-user" id="topProfileBtn"><span class="avatar avatar-patient">DU</span><span class="top-user-name" id="topUserName">Demo User<small>Patient</small></span><span class="chevron">⌄</span></button>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <section class="welcome-row overview-content" id="overview">
+          <div><div class="eyebrow"><span class="eyebrow-dot"></span> YOUR PERSONAL HEALTH SPACE</div><h1 id="welcomeHeading">Welcome to HealthConnect <span class="wave">✳</span></h1><p class="page-subtitle">Here’s your health overview for today. Stay informed, stay well.</p></div>
+          <div class="welcome-actions"><span class="date-chip" id="todayDate">Friday, October 16</span><button class="btn btn-primary" id="bookAppointmentBtn"><svg><use href="#i-plus"/></svg> Book appointment</button></div>
+        </section>
+
+        <section class="health-banner overview-content" aria-label="Health summary">
+          <div class="banner-orb orb-one"></div><div class="banner-orb orb-two"></div>
+          <div class="banner-copy"><span class="banner-label"><svg><use href="#i-pulse"/></svg> YOUR HEALTH SNAPSHOT</span><h2>Taking care of yourself<br/>starts with staying informed.</h2><p>All your care essentials, together in one secure space.</p><a href="#care-plan" data-section="care-plan" class="banner-link">View your care plan <svg><use href="#i-arrow"/></svg></a></div>
+          <div class="banner-art" aria-hidden="true"><div class="pulse-ring ring-a"></div><div class="pulse-ring ring-b"></div><div class="pulse-core"><svg><use href="#i-heart"/></svg><span class="pulse-line"></span></div><span class="float-plus plus-one">+</span><span class="float-plus plus-two">+</span><span class="float-dot dot-one"></span><span class="float-dot dot-two"></span></div>
+          <div class="banner-foot"><span><i></i> Profile last updated recently</span><span class="banner-separator">•</span><span>Patient ID: HC-2048</span></div>
+        </section>
+
+        <section class="stats-grid overview-content" aria-label="Health statistics">
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon teal-icon"><svg><use href="#i-calendar"/></svg></span><span class="stat-note neutral-note">Upcoming</span></div><div class="stat-number" id="statAppointments">02</div><div class="stat-label">Appointments</div><div class="stat-caption">Your next visit is coming up</div><a href="#appointments" data-section="appointments" class="stat-link">View schedule <svg><use href="#i-arrow"/></svg></a></article>
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon blue-icon"><svg><use href="#i-file"/></svg></span><span class="stat-note positive-note">Organised</span></div><div class="stat-number" id="statReports">12</div><div class="stat-label">Medical reports</div><div class="stat-caption">Saved in your health timeline</div><a href="#reports" data-section="reports" class="stat-link">View reports <svg><use href="#i-arrow"/></svg></a></article>
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon amber-icon"><svg><use href="#i-shield"/></svg></span><span class="stat-note warning-note" id="statPendingTag">Needs review</span></div><div class="stat-number" id="statPending">02</div><div class="stat-label">Pending requests</div><div class="stat-caption">Doctors requesting record access</div><a href="#access" data-section="access" class="stat-link">Review requests <svg><use href="#i-arrow"/></svg></a></article>
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon purple-icon"><svg><use href="#i-users"/></svg></span><span class="stat-note positive-note">Connected</span></div><div class="stat-number" id="statDoctors">02</div><div class="stat-label">My doctors</div><div class="stat-caption">Healthcare professionals in your circle</div><a href="#doctors" data-section="doctors" class="stat-link">View care team <svg><use href="#i-arrow"/></svg></a></article>
+        </section>
+
+        <section class="workspace-launcher overview-content" id="workspace-launcher" aria-labelledby="workspaceLauncherTitle">
+          <div class="launcher-heading">
+            <div><span class="section-kicker">YOUR WORKSPACE</span><h2 id="workspaceLauncherTitle">Where would you like to go?</h2><p>Choose a section to focus on one part of your health dashboard.</p></div>
+            <span class="launcher-hint">7 workspaces</span>
+          </div>
+          <div class="workspace-launcher-grid">
+            <button type="button" class="workspace-card" data-section="patient-details"><span class="workspace-card-icon icon-profile"><svg><use href="#i-users"/></svg></span><span class="workspace-card-copy"><strong>Patient details</strong><small>Profile and essential health information</small></span><svg class="workspace-card-arrow"><use href="#i-arrow"/></svg></button>
+            <button type="button" class="workspace-card" data-section="appointments"><span class="workspace-card-icon icon-appointments"><svg><use href="#i-calendar"/></svg></span><span class="workspace-card-copy"><strong>Appointments</strong><small>Upcoming visits and booking details</small></span><svg class="workspace-card-arrow"><use href="#i-arrow"/></svg></button>
+            <button type="button" class="workspace-card" data-section="reports"><span class="workspace-card-icon icon-reports"><svg><use href="#i-file"/></svg></span><span class="workspace-card-copy"><strong>Medical reports</strong><small>Reports, documents and uploads</small></span><svg class="workspace-card-arrow"><use href="#i-arrow"/></svg></button>
+            <button type="button" class="workspace-card" data-section="care-plan"><span class="workspace-card-icon icon-care"><svg><use href="#i-heart"/></svg></span><span class="workspace-card-copy"><strong>Precautions & medicines</strong><small>Care notes and medicine records</small></span><svg class="workspace-card-arrow"><use href="#i-arrow"/></svg></button>
+            <button type="button" class="workspace-card" data-section="doctors"><span class="workspace-card-icon icon-doctors"><svg><use href="#i-users"/></svg></span><span class="workspace-card-copy"><strong>Appointed doctors</strong><small>Your current care team</small></span><svg class="workspace-card-arrow"><use href="#i-arrow"/></svg></button>
+            <button type="button" class="workspace-card" data-section="access"><span class="workspace-card-icon icon-access"><svg><use href="#i-shield"/></svg></span><span class="workspace-card-copy"><strong>Access requests</strong><small>Allow or decline doctor requests</small></span><span class="workspace-card-badge" id="launcherPendingCount">2 pending</span><svg class="workspace-card-arrow"><use href="#i-arrow"/></svg></button>
+            <button type="button" class="workspace-card" data-section="access-history"><span class="workspace-card-icon icon-history"><svg><use href="#i-clock"/></svg></span><span class="workspace-card-copy"><strong>Doctor access history</strong><small>Review current and past sharing</small></span><svg class="workspace-card-arrow"><use href="#i-arrow"/></svg></button>
+          </div>
+        </section>
+
+        <section class="workspace-header" id="workspaceHeader" aria-live="polite">
+          <div><span class="section-kicker" id="workspaceKicker">YOUR WORKSPACE</span><h1 id="workspaceTitle">Medical reports</h1><p id="workspaceDescription">Your documents, organised in one place.</p></div>
+          <button class="btn btn-outline back-home-btn" id="backToOverviewBtn" type="button" data-section="overview"><svg><use href="#i-grid"/></svg> Back to overview</button>
+        </section>
+
+        <div class="dashboard-grid" id="workspacePanels">
+          <section class="panel workspace-panel appointments-panel" id="appointments">
+            <div class="panel-heading"><div><span class="section-kicker">YOUR SCHEDULE</span><h2>Upcoming appointments</h2><p>Keep track of your next visits.</p></div><button class="text-button" id="viewAppointmentsBtn">View all <svg><use href="#i-arrow"/></svg></button></div>
+            <div class="appointment-list" id="appointmentList">
+              <article class="appointment-item"><div class="appointment-date"><strong>21</strong><span>OCT</span></div><div class="appointment-main"><div class="appointment-title-row"><h3>Dr. Ananya Mehta</h3><span class="status-pill status-confirmed">Confirmed</span></div><p>General physician <span>•</span> Follow-up visit</p><div class="appointment-meta"><span><svg><use href="#i-clock"/></svg> 10:30 AM</span><span><svg><use href="#i-location"/></svg> CityCare Clinic</span></div></div><div class="doctor-mini-avatar doctor-1">AM</div></article>
+              <article class="appointment-item"><div class="appointment-date"><strong>26</strong><span>OCT</span></div><div class="appointment-main"><div class="appointment-title-row"><h3>Dr. Rohan Desai</h3><span class="status-pill status-pending">Awaiting confirmation</span></div><p>Cardiologist <span>•</span> Routine consultation</p><div class="appointment-meta"><span><svg><use href="#i-clock"/></svg> 04:00 PM</span><span><svg><use href="#i-location"/></svg> Online consultation</span></div></div><div class="doctor-mini-avatar doctor-2">RD</div></article>
+            </div>
+            <div class="panel-bottom-note"><span class="note-check"><svg><use href="#i-check"/></svg></span> <span>You're all caught up. We'll keep your schedule organised here.</span></div>
+          </section>
+
+          <section class="panel workspace-panel patient-panel" id="patient-details">
+            <div class="panel-heading"><div><span class="section-kicker">YOUR PROFILE</span><h2>Patient details</h2></div><button class="icon-button edit-profile-btn" id="editProfileBtn" aria-label="Edit patient details">↗</button></div>
+            <div class="patient-profile-head"><div class="profile-avatar avatar-patient large-avatar">PS</div><div><h3 id="detailsProfileName">Demo User</h3><p>Prototype account</p><span class="profile-verified"><svg><use href="#i-shield"/></svg> Profile on file</span></div></div>
+            <div class="detail-grid"><div class="detail-item"><span>DATE OF BIRTH</span><strong>12 March 1998</strong></div><div class="detail-item"><span>BLOOD GROUP</span><strong class="blood-group">O positive</strong></div><div class="detail-item"><span>PHONE NUMBER</span><strong>+91 98••• ••210</strong></div><div class="detail-item"><span>EMERGENCY CONTACT</span><strong>On file</strong></div></div>
+            <button class="btn btn-outline btn-full" id="viewProfileBtn">View full profile <svg><use href="#i-arrow"/></svg></button>
+          </section>
+
+          <section class="panel workspace-panel reports-panel" id="reports">
+            <div class="panel-heading"><div><span class="section-kicker">YOUR DOCUMENTS</span><h2>Recent medical reports</h2><p>Your reports, neatly organised in one place.</p></div><button class="btn btn-outline btn-small" id="uploadReportBtn"><svg><use href="#i-upload"/></svg> Upload report</button><input id="reportFileInput" type="file" accept="image/*,.pdf" hidden /></div>
+            <div class="reports-table-wrap"><table class="reports-table"><thead><tr><th>REPORT NAME</th><th>DATE ADDED</th><th>TYPE</th><th></th></tr></thead><tbody id="reportsTableBody">
+              <tr data-searchable="complete blood count cbc blood test"><td><div class="report-name"><span class="file-icon pdf-file">PDF</span><span><strong>Complete Blood Count</strong><small>cbc_report_oct.pdf</small></span></div></td><td>12 Oct 2026</td><td><span class="report-type">Blood test</span></td><td><button class="row-menu report-view-btn" data-report="Complete Blood Count" aria-label="View report">↗</button></td></tr>
+              <tr data-searchable="vitamin d test laboratory"><td><div class="report-name"><span class="file-icon img-file">IMG</span><span><strong>Vitamin D Test</strong><small>vitamin_d_result.jpg</small></span></div></td><td>04 Oct 2026</td><td><span class="report-type">Lab result</span></td><td><button class="row-menu report-view-btn" data-report="Vitamin D Test" aria-label="View report">↗</button></td></tr>
+              <tr data-searchable="annual health checkup summary"><td><div class="report-name"><span class="file-icon doc-file">PDF</span><span><strong>Annual Health Summary</strong><small>health_summary_2026.pdf</small></span></div></td><td>28 Sep 2026</td><td><span class="report-type">Summary</span></td><td><button class="row-menu report-view-btn" data-report="Annual Health Summary" aria-label="View report">↗</button></td></tr>
+            </tbody></table></div>
+            <div class="panel-footer"><span id="reportFooterText">Showing 3 recent reports <span class="demo-label">DEMO DATA</span></span><button class="text-button" id="allReportsBtn">All reports <svg><use href="#i-arrow"/></svg></button></div>
+          </section>
+
+          <section class="panel workspace-panel care-panel" id="care-plan">
+            <div class="panel-heading"><div><span class="section-kicker">DAILY WELLNESS</span><h2>Precautions & medicines</h2><p>Your care notes in one place.</p></div><span class="care-icon"><svg><use href="#i-heart"/></svg></span></div>
+            <div class="care-subheading"><span>GENERAL PRECAUTIONS</span><span class="demo-label">DEMO</span></div>
+            <ul class="precaution-list"><li><span class="list-dot teal-dot"></span><span>Follow the care instructions provided by your clinician.</span></li><li><span class="list-dot blue-dot"></span><span>Keep previous reports handy for appointments.</span></li><li><span class="list-dot amber-dot"></span><span>Confirm any medicine changes with your clinician.</span></li></ul>
+            <div class="care-divider"></div>
+            <div class="care-subheading"><span>MEDICINES ON FILE</span><button id="medicineInfoBtn" class="mini-link">View notes</button></div>
+            <div class="medicine-row"><span class="medicine-symbol">Rx</span><div class="medicine-copy"><strong>Vitamin D supplement</strong><span>Sample record • follow clinician instructions</span></div><span class="medicine-status">On file</span></div>
+            <div class="medicine-row"><span class="medicine-symbol blue-med">Rx</span><div class="medicine-copy"><strong>Medication record 02</strong><span>Sample record • details to be verified</span></div><span class="medicine-status">On file</span></div>
+            <p class="medical-disclaimer">Demo information only. Not medical advice. Always follow your qualified healthcare professional's instructions.</p>
+          </section>
+
+          <section class="panel workspace-panel doctors-panel" id="doctors">
+            <div class="panel-heading"><div><span class="section-kicker">YOUR CARE TEAM</span><h2>Appointed doctors</h2><p>Professionals listed in your care circle.</p></div><button class="text-button" id="findDoctorBtn">Find a doctor <svg><use href="#i-arrow"/></svg></button></div>
+            <div class="doctor-list" id="doctorList">
+              <article class="doctor-row"><div class="doctor-avatar doctor-1">AM</div><div class="doctor-detail"><strong>Dr. Ananya Mehta</strong><span>General physician</span><small><span class="online-dot"></span> Appointed doctor</small></div><button class="doctor-action" data-doctor="Dr. Ananya Mehta">Details <svg><use href="#i-arrow"/></svg></button></article>
+              <article class="doctor-row"><div class="doctor-avatar doctor-2">RD</div><div class="doctor-detail"><strong>Dr. Rohan Desai</strong><span>Cardiologist</span><small><span class="online-dot pending-online"></span> Appointment requested</small></div><button class="doctor-action" data-doctor="Dr. Rohan Desai">Details <svg><use href="#i-arrow"/></svg></button></article>
+            </div>
+          </section>
+
+          <section class="panel workspace-panel access-panel" id="access">
+            <div class="panel-heading"><div><span class="section-kicker">YOUR PRIVACY</span><h2>Doctor access requests</h2><p>You stay in control of who sees your records.</p></div><span class="access-shield"><svg><use href="#i-shield"/></svg></span></div>
+            <div class="access-request-list" id="accessRequestList">
+              <article class="access-request" data-request-id="req1"><div class="request-avatar request-avatar-purple">NK</div><div class="request-content"><div class="request-title"><strong>Dr. Neel Kapoor</strong><span class="status-pill status-pending">Pending</span></div><p>Northside Medical Centre</p><span class="request-meta">Requests access to selected medical records · 2 hours ago</span><div class="request-buttons"><button class="btn btn-primary btn-xs approve-request" data-request-id="req1">Allow access</button><button class="btn btn-quiet btn-xs reject-request" data-request-id="req1">Decline</button></div></div></article>
+              <article class="access-request" data-request-id="req2"><div class="request-avatar request-avatar-coral">SP</div><div class="request-content"><div class="request-title"><strong>Dr. Simran Patel</strong><span class="status-pill status-pending">Pending</span></div><p>WellSpring Diagnostics</p><span class="request-meta">Requests access to blood test report · Yesterday</span><div class="request-buttons"><button class="btn btn-primary btn-xs approve-request" data-request-id="req2">Allow access</button><button class="btn btn-quiet btn-xs reject-request" data-request-id="req2">Decline</button></div></div></article>
+            </div>
+            <div class="access-empty hidden" id="accessEmpty"><span class="empty-check"><svg><use href="#i-check"/></svg></span><strong>You're all caught up</strong><p>No pending doctor access requests.</p></div>
+            <div class="panel-footer access-footer"><span><svg><use href="#i-shield"/></svg> Access is permission-based in this demo.</span><button class="text-button" id="accessHistoryBtn">Access history <svg><use href="#i-arrow"/></svg></button></div>
+          </section>
+
+          <section class="panel workspace-panel history-panel" id="access-history">
+            <div class="panel-heading"><div><span class="section-kicker">RECENT ACTIVITY</span><h2>Doctor access history</h2><p>Review doctors currently listed with access.</p></div><span class="history-icon"><svg><use href="#i-clock"/></svg></span></div>
+            <div class="history-list" id="accessHistoryList">
+              <div class="history-item"><span class="history-marker success-marker"><svg><use href="#i-check"/></svg></span><div class="history-copy"><strong>Dr. Ananya Mehta</strong><span>Access approved · Selected records</span><small>Last accessed: 14 Oct 2026, 11:20 AM</small></div><button class="revoke-btn" data-doctor-id="doc1">Revoke</button></div>
+              <div class="history-item"><span class="history-marker neutral-marker"><svg><use href="#i-file"/></svg></span><div class="history-copy"><strong>Dr. Rohan Desai</strong><span>Access not yet granted</span><small>Awaiting appointment confirmation</small></div><span class="history-status">Not shared</span></div>
+            </div>
+            <div class="privacy-footnote"><svg><use href="#i-shield"/></svg><span>Only share health information with healthcare professionals you trust. This frontend demo does not enforce real data security.</span></div>
+          </section>
+        </div>
+
+        <footer class="page-footer"><div class="footer-brand"><span class="footer-logo"><svg><use href="#i-heart"/></svg></span> HealthConnect <span>·</span> <small>Your health, connected.</small></div><div class="footer-meta"><span><i></i> Frontend demo</span><span>Privacy-first by design</span><span>© 2026 HealthConnect</span></div></footer>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header"><div><span class="section-kicker" id="modalKicker">HEALTHCONNECT</span><h2 id="modalTitle">Book an appointment</h2></div><button class="icon-button" id="closeModalBtn" aria-label="Close dialog"><svg><use href="#i-x"/></svg></button></div>
+      <div class="modal-body" id="modalBody"></div>
+    </section>
+  </div>
+
+  <script src="dashboard-script.js"></script>
+</body>
+</html>
